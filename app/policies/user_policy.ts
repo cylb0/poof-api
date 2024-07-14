@@ -5,7 +5,10 @@ import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 
 export default class UserPolicy extends BasePolicy {
   async before(user: User | null, action: string, ...params: any[]) {
-    return user && user.roleId === Roles.ADMIN
+    if (user === null) {
+      return false
+    }
+    return user.roleId === Roles.ADMIN
   }
 
   show(user: User): AuthorizerResponse {
