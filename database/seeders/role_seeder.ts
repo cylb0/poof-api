@@ -6,10 +6,12 @@ export default class RoleSeeder extends BaseSeeder {
   async run() {
     await Role.createMany([
       {
-        role: Roles.ADMIN,
+        id: Roles.ADMIN,
+        role: 'admin',
       },
       {
-        role: Roles.USER,
+        id: Roles.USER,
+        role: 'user',
       },
     ])
   }
