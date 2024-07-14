@@ -1,0 +1,19 @@
+import { BaseSchema } from '@adonisjs/lucid/schema'
+import { Roles } from '../../app/enums/roles.js'
+
+export default class extends BaseSchema {
+  protected tableName = 'roles'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
+      table.enum('role', [Roles.ADMIN, Roles.USER]).defaultTo(Roles.USER)
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
