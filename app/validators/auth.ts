@@ -1,5 +1,8 @@
 import vine from '@vinejs/vine'
 
+/**
+ * Validator for the register payload
+ */
 export const registerValidator = vine.compile(
   vine.object({
     email: vine
@@ -14,5 +17,15 @@ export const registerValidator = vine.compile(
       .minLength(12)
       .maxLength(32)
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/),
+  })
+)
+
+/**
+ * Validator for the login payload
+ */
+export const loginValidator = vine.compile(
+  vine.object({
+    email: vine.string().email(),
+    password: vine.string(),
   })
 )
