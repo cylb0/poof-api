@@ -1,3 +1,4 @@
+import { Roles } from '#enums/roles'
 import vine from '@vinejs/vine'
 
 /**
@@ -7,7 +8,7 @@ export const createUserValidator = vine.compile(
   vine.object({
     email: vine.string().email(),
     password: vine.string(),
-    roleId: vine.number().optional(),
+    roleId: vine.enum(Roles).optional(),
   })
 )
 

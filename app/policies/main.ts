@@ -13,5 +13,6 @@
 */
 
 export const policies = {
+  PublicAssetPolicy: () => import('#policies/public_asset_policy'),
   UserPolicy: () => import('#policies/user_policy')
 }

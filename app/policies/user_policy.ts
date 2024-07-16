@@ -8,6 +8,11 @@ export default class UserPolicy extends BasePolicy {
     if (user === null) {
       return false
     }
+
+    if (action === 'delete' && user.id === params[0].id) {
+      return false
+    }
+
     return user.roleId === Roles.ADMIN
   }
 

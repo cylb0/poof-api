@@ -4,7 +4,7 @@ import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import { Roles } from '#enums/roles'
 
 export default class PublicAssetPolicy extends BasePolicy {
-  async before(user: User | null, action: string, ...params: any[]) {
+  async before(user: User | null) {
     if (user === null) {
       return false
     }
@@ -15,11 +15,11 @@ export default class PublicAssetPolicy extends BasePolicy {
     return false
   }
 
-  create(user: User): AuthorizerResponse {
+  store(user: User): AuthorizerResponse {
     return false
   }
 
-  edit(user: User): AuthorizerResponse {
+  update(user: User): AuthorizerResponse {
     return false
   }
 

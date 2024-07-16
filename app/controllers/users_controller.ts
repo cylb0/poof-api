@@ -31,7 +31,7 @@ export default class UsersController {
         message: `You cannot access this resource.`,
       })
     }
-    const user = this.userService.findOne(params.id)
+    const user = await this.userService.findOne(params.id)
     return response.ok(user)
   }
 

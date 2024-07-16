@@ -1,3 +1,4 @@
+import { Roles } from '#enums/roles'
 import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
@@ -7,6 +8,7 @@ export default class UserSeeder extends BaseSeeder {
       {
         email: 'admin@admin.com',
         password: 'passwordadmin',
+        roleId: Roles.ADMIN,
       },
       {
         email: 'user@user.com',
