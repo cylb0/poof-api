@@ -1,5 +1,4 @@
 import { test } from '@japa/runner'
-import { messages } from '@vinejs/vine/defaults'
 
 test.group('POST /register', () => {
   const validEmail = 'test@mail.com'
@@ -87,7 +86,6 @@ test.group('POST /register', () => {
       email: validEmail,
       password: {},
     })
-    console.log(response.body())
     response.assertStatus(422)
     response.assertBodyContains({
       errors: [
