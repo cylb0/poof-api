@@ -96,4 +96,35 @@ test.group('POST /register', () => {
       ],
     })
   })
+
+  test('should throw an error when a field is missing', async ({ client }) => {
+    const responseWithoutEmail = await client.post('/register').json({
+      password: validPassword,
+    })
+    responseWithoutEmail.assertStatus(422)
+    responseWithoutEmail.assertBodyContains({
+      errors: [
+        {
+          message: 'The email field must be defined',
+          rule: 'required',
+          field: 'email',
+        },
+      ],
+    })
+
+    const responseWithoutPassword = await client.post('/login').json({
+      email: validEmail,
+    })
+
+    responseWithoutPassword.assertStatus(422)
+    responseWithoutPassword.assertBodyContains({
+      errors: [
+        {
+          message: 'The password field must be defined',
+          rule: 'required',
+          field: 'password',
+        },
+      ],
+    })
+  })
 })
