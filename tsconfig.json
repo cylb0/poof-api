@@ -18,6 +18,7 @@
       "#abilities/*": ["./app/abilities/*.js"],
       "#database/*": ["./database/*.js"],
       "#tests/*": ["./tests/*.js"],
+      "#types/*": ["./app/types/*.js"],
       "#start/*": ["./start/*.js"],
       "#config/*": ["./config/*.js"]
     },
