@@ -10,23 +10,23 @@ export default class ScenePolicy extends BasePolicy {
     return user.roleId === Roles.ADMIN
   }
 
-  index(user: User) {
+  index(user: User): AuthorizerResponse {
     return false
   }
 
-  show(user: User, scene: Scene) {
+  show(user: User, scene: Scene): AuthorizerResponse {
     return false
   }
 
-  create(user: User) {
+  create(user: User): AuthorizerResponse {
     return false
   }
 
-  update(user: User, scene: Scene) {
+  update(user: User, scene: Scene): AuthorizerResponse {
     return false
   }
 
-  destroy(user: User, scene: Scene) {
+  destroy(user: User, scene: Scene): AuthorizerResponse {
     return false
   }
 }
