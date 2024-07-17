@@ -13,6 +13,7 @@
 */
 
 export const policies = {
+  StoryPolicy: () => import('#policies/story_policy'),
   PrivateAssetPolicy: () => import('#policies/private_asset_policy'),
   PublicAssetPolicy: () => import('#policies/public_asset_policy'),
   UserPolicy: () => import('#policies/user_policy')

@@ -7,6 +7,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import Role from '#models/role'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import PrivateAsset from '#models/private_asset'
+import Story from './story.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -67,8 +68,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare role: BelongsTo<typeof Role>
 
   /**
-   * HasMany relationship with the `PrivateAsset model`
+   * HasMany relationship with the `PrivateAsset` model
    */
   @hasMany(() => PrivateAsset)
   declare privateAssets: HasMany<typeof PrivateAsset>
+
+  /**
+   * HasMany relationship with the `Story` model
+   */
+  @hasMany(() => Story)
+  declare stories: HasMany<typeof Story>
 }
