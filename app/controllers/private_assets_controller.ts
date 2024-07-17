@@ -15,13 +15,26 @@ export default class PrivateAssetsController {
    * Display a list of resource
    */
   async index({ bouncer, response }: HttpContext) {
-    if (await bouncer.with(PrivateAssetPolicy).denies('show')) {
+    if (await bouncer.with(PrivateAssetPolicy).denies('index')) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
     }
     const privateAssets = await this.privateAssetService.all()
     return response.ok(privateAssets)
+  }
+
+  /**
+   * Show individual record
+   */
+  async show({ bouncer, params, response }: HttpContext) {
+    const privateAsset = await this.privateAssetService.findOne(params.id)
+    if (await bouncer.with(PrivateAssetPolicy).denies('show', privateAsset)) {
+      return response.forbidden({
+        message: FORBIDDEN_MESSAGE,
+      })
+    }
+    return response.ok(privateAsset)
   }
 
   /**
@@ -41,24 +54,11 @@ export default class PrivateAssetsController {
   }
 
   /**
-   * Show individual record
-   */
-  async show({ bouncer, params, response }: HttpContext) {
-    const privateAsset = this.privateAssetService.findOne(params.id)
-    if (await bouncer.with(PrivateAssetPolicy).denies('show')) {
-      return response.forbidden({
-        message: FORBIDDEN_MESSAGE,
-      })
-    }
-    return response.ok(privateAsset)
-  }
-
-  /**
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
     const privateAsset = await this.privateAssetService.findOne(params.id)
-    if (await bouncer.with(PrivateAssetPolicy).denies('update')) {
+    if (await bouncer.with(PrivateAssetPolicy).denies('update', privateAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
@@ -78,7 +78,7 @@ export default class PrivateAssetsController {
    */
   async destroy({ bouncer, params, response }: HttpContext) {
     const privateAsset = await this.privateAssetService.findOne(params.id)
-    if (await bouncer.with(PrivateAssetPolicy).denies('update')) {
+    if (await bouncer.with(PrivateAssetPolicy).denies('destroy', privateAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
