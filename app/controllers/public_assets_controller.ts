@@ -15,13 +15,26 @@ export default class PublicAssetsController {
    * Display a list of resource
    */
   async index({ bouncer, response }: HttpContext) {
-    if (await bouncer.with(PublicAssetPolicy).denies('show')) {
+    if (await bouncer.with(PublicAssetPolicy).denies('index')) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
     }
     const publicAssets = await this.publicAssetService.all()
     return response.ok(publicAssets)
+  }
+
+  /**
+   * Show individual record
+   */
+  async show({ bouncer, params, response }: HttpContext) {
+    const publicAsset = await this.publicAssetService.findOne(params.id)
+    if (await bouncer.with(PublicAssetPolicy).denies('show', publicAsset)) {
+      return response.forbidden({
+        message: FORBIDDEN_MESSAGE,
+      })
+    }
+    return response.ok(publicAsset)
   }
 
   /**
@@ -39,24 +52,11 @@ export default class PublicAssetsController {
   }
 
   /**
-   * Show individual record
-   */
-  async show({ bouncer, params, response }: HttpContext) {
-    const publicAsset = this.publicAssetService.findOne(params.id)
-    if (await bouncer.with(PublicAssetPolicy).denies('show')) {
-      return response.forbidden({
-        message: FORBIDDEN_MESSAGE,
-      })
-    }
-    return response.ok(publicAsset)
-  }
-
-  /**
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
     const publicAsset = await this.publicAssetService.findOne(params.id)
-    if (await bouncer.with(PublicAssetPolicy).denies('update')) {
+    if (await bouncer.with(PublicAssetPolicy).denies('update', publicAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
@@ -76,7 +76,7 @@ export default class PublicAssetsController {
    */
   async destroy({ bouncer, params, response }: HttpContext) {
     const publicAsset = await this.publicAssetService.findOne(params.id)
-    if (await bouncer.with(PublicAssetPolicy).denies('update')) {
+    if (await bouncer.with(PublicAssetPolicy).denies('destroy', publicAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })

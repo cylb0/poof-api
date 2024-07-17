@@ -2,6 +2,7 @@ import User from '#models/user'
 import { BasePolicy } from '@adonisjs/bouncer'
 import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import { Roles } from '#enums/roles'
+import PublicAsset from '#models/public_asset'
 
 export default class PublicAssetPolicy extends BasePolicy {
   async before(user: User | null) {
@@ -11,7 +12,11 @@ export default class PublicAssetPolicy extends BasePolicy {
     return user.roleId === Roles.ADMIN
   }
 
-  show(user: User): AuthorizerResponse {
+  index(user: User): AuthorizerResponse {
+    return false
+  }
+
+  show(user: User, publicAsset: PublicAsset): AuthorizerResponse {
     return false
   }
 
@@ -19,11 +24,11 @@ export default class PublicAssetPolicy extends BasePolicy {
     return false
   }
 
-  update(user: User): AuthorizerResponse {
+  update(user: User, publicAsset: PublicAsset): AuthorizerResponse {
     return false
   }
 
-  delete(user: User): AuthorizerResponse {
+  destroy(user: User, publicAsset: PublicAsset): AuthorizerResponse {
     return false
   }
 }
