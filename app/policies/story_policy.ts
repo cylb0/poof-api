@@ -12,7 +12,11 @@ export default class StoryPolicy extends BasePolicy {
     return user.roleId === Roles.ADMIN
   }
 
-  show(user: User): AuthorizerResponse {
+  index(user: User): AuthorizerResponse {
+    return false
+  }
+
+  show(user: User, story: Story): AuthorizerResponse {
     return false
   }
 

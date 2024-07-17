@@ -13,7 +13,7 @@ export default class StoriesController {
    * Display a list of resource
    */
   async index({ bouncer, response }: HttpContext) {
-    if (await bouncer.with(StoryPolicy).denies('show')) {
+    if (await bouncer.with(StoryPolicy).denies('index')) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
     const stories = await this.storyService.all()
@@ -24,10 +24,10 @@ export default class StoriesController {
    * Show individual record
    */
   async show({ bouncer, params, response }: HttpContext) {
-    if (await bouncer.with(StoryPolicy).denies('show')) {
+    const story = await this.storyService.findOne(params.id)
+    if (await bouncer.with(StoryPolicy).denies('show', story)) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
-    const story = await this.storyService.findOne(params.id)
     return response.ok(story)
   }
 
