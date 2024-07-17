@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import User from './user.js'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import User from '#models/user'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Scene from './scene.js'
 
 /**
  * Describes the story model
@@ -48,4 +49,10 @@ export default class Story extends BaseModel {
    */
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
+
+  /**
+   * HasMany relastionship with the `Scene` model
+   */
+  @hasMany(() => Scene)
+  declare scenes: HasMany<typeof Scene>
 }

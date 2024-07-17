@@ -7,7 +7,7 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import Role from '#models/role'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import PrivateAsset from '#models/private_asset'
-import Story from './story.js'
+import Story from '#models/story'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
