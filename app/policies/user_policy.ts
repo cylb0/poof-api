@@ -16,7 +16,11 @@ export default class UserPolicy extends BasePolicy {
     return user.roleId === Roles.ADMIN
   }
 
-  show(user: User): AuthorizerResponse {
+  index(user: User): AuthorizerResponse {
+    return false
+  }
+
+  show(user: User, userToShow: User): AuthorizerResponse {
     return false
   }
 
@@ -24,7 +28,7 @@ export default class UserPolicy extends BasePolicy {
     return false
   }
 
-  edit(user: User, userToEdit: User): AuthorizerResponse {
+  update(user: User, userToEdit: User): AuthorizerResponse {
     return false
   }
 

@@ -13,7 +13,7 @@ export default class UsersController {
    * Display a list of resource
    */
   async index({ bouncer, response }: HttpContext) {
-    if (await bouncer.with(UserPolicy).denies('show')) {
+    if (await bouncer.with(UserPolicy).denies('index')) {
       return response.forbidden({
         message: `You cannot access this resource.`,
       })
@@ -26,12 +26,12 @@ export default class UsersController {
    * Show individual record
    */
   async show({ bouncer, params, response }: HttpContext) {
-    if (await bouncer.with(UserPolicy).denies('show')) {
+    const user = await this.userService.findOne(params.id)
+    if (await bouncer.with(UserPolicy).denies('show', user)) {
       return response.forbidden({
         message: `You cannot access this resource.`,
       })
     }
-    const user = await this.userService.findOne(params.id)
     return response.ok(user)
   }
 
@@ -54,7 +54,7 @@ export default class UsersController {
    */
   async update({ bouncer, params, request, response }: HttpContext) {
     const user = await this.userService.findOne(params.id)
-    if (await bouncer.with(UserPolicy).denies('edit', user)) {
+    if (await bouncer.with(UserPolicy).denies('update', user)) {
       return response.forbidden({
         message: `You cannot access this resource.`,
       })
