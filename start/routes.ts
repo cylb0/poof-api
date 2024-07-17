@@ -12,6 +12,7 @@ import { middleware } from './kernel.js'
 const AuthController = () => import('#controllers/auth_controller')
 const PrivateAssetsController = () => import('#controllers/private_assets_controller')
 const PublicAssetsController = () => import('#controllers/public_assets_controller')
+const ScenesController = () => import('#controllers/scenes_controller')
 const StoriesController = () => import('#controllers/stories_controller')
 const UsersController = () => import('#controllers/users_controller')
 
@@ -22,6 +23,8 @@ router
   .apiOnly()
   .use('*', middleware.auth())
   .apiOnly()
+
+router.resource('scenes', ScenesController).apiOnly().use('*', middleware.auth()).apiOnly()
 
 router.resource('stories', StoriesController).apiOnly().use('*', middleware.auth()).apiOnly()
 

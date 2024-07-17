@@ -1,30 +1,32 @@
 import User from '#models/user'
-import Story from '#models/story'
+import Scene from '#models/scene'
 import { BasePolicy } from '@adonisjs/bouncer'
 import { AuthorizerResponse } from '@adonisjs/bouncer/types'
 import { Roles } from '#enums/roles'
 
-export default class StoryPolicy extends BasePolicy {
+export default class ScenePolicy extends BasePolicy {
   async before(user: User) {
-    if (user === null) {
-      return false
-    }
+    if (user === null) return false
     return user.roleId === Roles.ADMIN
   }
 
-  show(user: User): AuthorizerResponse {
+  index(user: User) {
     return false
   }
 
-  store(user: User): AuthorizerResponse {
+  show(user: User, scene: Scene) {
     return false
   }
 
-  update(user: User, story: Story): AuthorizerResponse {
+  create(user: User) {
     return false
   }
 
-  delete(user: User, story: Story): AuthorizerResponse {
+  update(user: User, scene: Scene) {
+    return false
+  }
+
+  destroy(user: User, scene: Scene) {
     return false
   }
 }
