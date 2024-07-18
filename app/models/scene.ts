@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import Story from '#models/story'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import PublicAsset from '#models/public_asset'
 import PrivateAsset from '#models/private_asset'
+import SceneElement from './scene_element.js'
 
 /**
  * Defines the scene model
@@ -64,13 +65,6 @@ export default class Scene extends BaseModel {
   declare publicAsset: BelongsTo<typeof PublicAsset>
 
   /**
-   * Checks if the model has a `PublicAsset` relationship
-   */
-  hasPublicAsset() {
-    return this.publicAsset !== null
-  }
-
-  /**
    * Private key referencing the `PrivateAsset` model
    */
   @column()
@@ -81,6 +75,19 @@ export default class Scene extends BaseModel {
    */
   @belongsTo(() => PrivateAsset)
   declare privateAsset: BelongsTo<typeof PrivateAsset>
+
+  /**
+   * HasMany relationship with the `SceneElement` model
+   */
+  @hasMany(() => SceneElement)
+  declare sceneElements: HasMany<typeof SceneElement>
+
+  /**
+   * Checks if the model has a `PublicAsset` relationship
+   */
+  hasPublicAsset() {
+    return this.publicAsset !== null
+  }
 
   /**
    * Checks if the model has a `PrivateAsset` relationship
