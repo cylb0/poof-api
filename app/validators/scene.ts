@@ -6,6 +6,7 @@ import vine from '@vinejs/vine'
 export const createSceneValidator = vine.compile(
   vine.object({
     duration: vine.number(),
+    storyId: vine.number(),
   })
 )
 
