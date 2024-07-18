@@ -3,7 +3,8 @@
  */
 export interface StoryCreationPayload {
     name?: string
-    description?: string
+    description?: string,
+    userId: number,
 }
 
 /**

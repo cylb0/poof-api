@@ -55,7 +55,7 @@ export default class Scene extends BaseModel {
    * Foreign key referencing the `PublicAsset` model
    */
   @column()
-  declare publicAssetId: number
+  declare publicAssetId?: number
 
   /**
    * BelongsTo relationship with the `PublicAsset` model
@@ -74,7 +74,7 @@ export default class Scene extends BaseModel {
    * Private key referencing the `PrivateAsset` model
    */
   @column()
-  declare privateAssetId: number
+  declare privateAssetId?: number
 
   /**
    * BelongsTo relationship with the `PrivateAsset` model

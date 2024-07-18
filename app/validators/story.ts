@@ -1,3 +1,4 @@
+import User from '#models/user'
 import vine from '@vinejs/vine'
 
 /**
@@ -7,6 +8,10 @@ export const createStoryValidator = vine.compile(
   vine.object({
     name: vine.string().maxLength(255).optional(),
     description: vine.string().optional(),
+    userId: vine.number().exists(async (query, field) => {
+      const user = (await query.from('users').where('id', field).first()) as User
+      return !!user
+    }),
   })
 )
 
