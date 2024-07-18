@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import { Assets } from '#enums/assets'
 import User from '#models/user'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Scene from '#models/scene'
 
 /**
  * Defines the private asset model
@@ -49,4 +50,10 @@ export default class PrivateAsset extends BaseModel {
    */
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
+
+  /**
+   * HasMany relationship with the `Scene` model
+   */
+  @hasMany(() => Scene)
+  declare scenes: HasMany<typeof Scene>
 }

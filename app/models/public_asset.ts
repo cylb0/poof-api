@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import { Assets } from '#enums/assets'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import Scene from '#models/scene'
 
 /**
  * Defines the public asset model
@@ -35,4 +37,10 @@ export default class PublicAsset extends BaseModel {
    */
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  /**
+   * HasMany relationship with the `Scene` model
+   */
+  @hasMany(() => Scene)
+  declare scenes: HasMany<typeof Scene>
 }

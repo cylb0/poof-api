@@ -7,7 +7,18 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.float('duration').notNullable()
-      table.integer('story_id').unsigned().references('stories.id').onDelete('CASCADE')
+      table
+        .integer('story_id')
+        .unsigned()
+        .references('stories.id')
+        .onDelete('CASCADE')
+        .notNullable()
+      table.integer('public_asset_id').unsigned().references('public_assets.id').onDelete('CASCADE')
+      table
+        .integer('private_asset_id')
+        .unsigned()
+        .references('private_assets.id')
+        .onDelete('CASCADE')
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
