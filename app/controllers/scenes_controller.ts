@@ -39,6 +39,12 @@ export default class ScenesController {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
     const payload: SceneCreationPayload = await request.validateUsing(createSceneValidator)
+    if (!payload.privateAssetId && !payload.publicAssetId && !payload.backgroundColor) {
+      return response.badRequest({ message: `A scene must have a content.` })
+    }
+    if (payload.privateAssetId && payload.publicAssetId) {
+      return response.badRequest({ message: `You can only select one asset.` })
+    }
     const scene = await this.sceneService.create(payload)
     return response.created(scene)
   }
@@ -52,6 +58,22 @@ export default class ScenesController {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
     const payload: SceneUpdatePayload = await request.validateUsing(updateSceneValidator)
+
+    const existingHasPublicAsset = !!scene.publicAssetId
+    const existingHasPrivateAsset = !!scene.privateAssetId
+    const existingHasBackground = !!scene.backgroundColor
+    const hasPublicAsset = existingHasPublicAsset || payload.publicAssetId
+    const hasPrivateAsset = existingHasPrivateAsset || payload.privateAssetId
+    const hasBackground = existingHasBackground || payload.backgroundColor
+
+    if (hasPublicAsset && hasPrivateAsset) {
+      return response.badRequest({ message: `You can only select one asset.` })
+    }
+
+    if (!hasPrivateAsset && !hasPublicAsset && !hasBackground) {
+      return response.badRequest({ message: `You can only select one asset.` })
+    }
+
     const updatedScene = await this.sceneService.update(scene, payload)
     return response.ok(updatedScene)
   }
