@@ -4,6 +4,9 @@
 export interface SceneCreationPayload {
   duration: number
   storyId: number
+  backgroundColor?: string
+  publicAssetId?: number
+  privateAssetId?: number
 }
 
 /**
@@ -11,4 +14,7 @@ export interface SceneCreationPayload {
  */
 export interface SceneUpdatePayload {
   duration?: number
+  backgroundColor?: string
+  publicAssetId?: number
+  privateAssetId?: number
 }
