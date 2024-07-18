@@ -22,6 +22,12 @@ export default class Scene extends BaseModel {
   declare duration: number
 
   /**
+   * Background color for the scene
+   */
+  @column()
+  declare backgroundColor?: string
+
+  /**
    * Timestamp for scene creation
    */
   @column.dateTime({ autoCreate: true })

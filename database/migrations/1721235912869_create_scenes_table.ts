@@ -7,6 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.float('duration').notNullable()
+      table.string('background_color')
       table
         .integer('story_id')
         .unsigned()
