@@ -97,7 +97,7 @@ export default class SceneElement extends BaseModel {
   declare dimensions?: Dimensions
 
   /**
-   * Asset specific metadata
+   * (Optional) Asset specific metadata
    */
   @column()
   declare metadata?: JSON
