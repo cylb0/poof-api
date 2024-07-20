@@ -1,11 +1,11 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import Scene from './scene.js'
-import { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Scene from '#models/scene'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { SceneElementType } from '#enums/assets'
-import PublicAsset from './public_asset.js'
-import PrivateAsset from './private_asset.js'
-import { Dimensions, Position } from '#types/scene_element'
+import PublicAsset from '#models/public_asset'
+import PrivateAsset from '#models/private_asset'
+import type { Dimensions, Position } from '#types/scene_element'
 
 /**
  * Defines the scene element model
@@ -36,11 +36,11 @@ export default class SceneElement extends BaseModel {
   declare type: SceneElementType
 
   /**
-   * Z-index of the scene element, a higher number means
+   * (Optional) Z-index of the scene element, a higher number means
    * the element is positioned over its siblings.
    */
   @column()
-  declare zIndex: number
+  declare zIndex?: number
 
   /**
    * Foreign key referencing the `PublicAsset` model
@@ -67,10 +67,10 @@ export default class SceneElement extends BaseModel {
   declare privateAsset: BelongsTo<typeof PrivateAsset>
 
   /**
-   * Text content in case of a text scene element
+   * (Optional) Text content in case of a text scene element
    */
   @column()
-  declare textContent: string
+  declare textContent?: string
 
   /**
    * Time in seconds when the scene element appears in the video
