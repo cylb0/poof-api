@@ -29,18 +29,6 @@ export default class Scene extends BaseModel {
   declare backgroundColor?: string
 
   /**
-   * Timestamp for scene creation
-   */
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  /**
-   * Timestamp for scene update
-   */
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
-  /**
    * Foreign key referencing the `Story` model
    */
   @column()
@@ -95,4 +83,16 @@ export default class Scene extends BaseModel {
   hasPrivateAsset() {
     return this.privateAsset !== null
   }
+
+  /**
+   * Timestamp for scene creation
+   */
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  /**
+   * Timestamp for scene update
+   */
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
 }
