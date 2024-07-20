@@ -8,5 +8,9 @@ export default class extends BaseSeeder {
   async run() {
     await this.seed(await import('#database/seeders/role_seeder'))
     await this.seed(await import('#database/seeders/user_seeder'))
+    await this.seed(await import('#database/seeders/public_asset_seeder'))
+    await this.seed(await import('#database/seeders/private_asset_seeder'))
+    await this.seed(await import('#database/seeders/story_seeder'))
+    await this.seed(await import('#database/seeders/scene_seeder'))
   }
 }
