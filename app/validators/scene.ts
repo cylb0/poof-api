@@ -10,7 +10,7 @@ export const createSceneValidator = vine.compile(
   vine.object({
     duration: vine.number(),
     storyId: vine.number(),
-    backgroundColor: vine.string().optional(),
+    backgroundColor: vine.string().hexCode().optional(),
     publicAssetId: vine
       .number()
       .exists(async (query, field) => {
