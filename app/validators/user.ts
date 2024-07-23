@@ -1,6 +1,6 @@
 import { Roles } from '#enums/roles'
-import User from '#models/user'
 import vine from '@vinejs/vine'
+import { uniqueRule } from '../rules/unique.js'
 
 /**
  * Validates the user's creation action
@@ -10,10 +10,7 @@ export const createUserValidator = vine.compile(
     email: vine
       .string()
       .email()
-      .unique(async (db, value) => {
-        const user = await db.from('users').where('email', value).first()
-        return !user
-      }),
+      .use(uniqueRule({ table: 'users', column: 'email' })),
     password: vine.string(),
     roleId: vine.enum(Roles).optional(),
   })
