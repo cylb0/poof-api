@@ -13,7 +13,7 @@ export const createPrivateAssetValidator = vine.compile(
       .positive()
       .exists(async (db, value) => {
         const user = await db.from('users').where('id', value).first()
-        return !user
+        return !!user
       }),
   })
 )
