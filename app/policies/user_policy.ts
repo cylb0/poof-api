@@ -9,11 +9,14 @@ export default class UserPolicy extends BasePolicy {
       return false
     }
 
+    /**
+     * Prevent a user from deleting himself
+     */
     if (action === 'delete' && user.id === params[0].id) {
       return false
     }
 
-    return user.roleId === Roles.ADMIN
+    if (user.roleId === Roles.ADMIN) return true
   }
 
   index(user: User): AuthorizerResponse {
@@ -24,7 +27,7 @@ export default class UserPolicy extends BasePolicy {
     return false
   }
 
-  create(user: User): AuthorizerResponse {
+  store(user: User): AuthorizerResponse {
     return false
   }
 

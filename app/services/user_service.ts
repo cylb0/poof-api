@@ -1,3 +1,4 @@
+import RowNotFoundException from '#exceptions/row_not_found_exception'
 import User from '#models/user'
 import { UserCreationPayload, UserUpdatePayload } from '../types/user.js'
 
@@ -5,6 +6,11 @@ import { UserCreationPayload, UserUpdatePayload } from '../types/user.js'
  * Service that handles user objects related operations
  */
 export default class UserService {
+  /**
+   * Entity name as displayed in exception messages
+   */
+  entityName = 'User'
+
   constructor() {}
 
   /**
@@ -18,10 +24,14 @@ export default class UserService {
    * Find a single user by its ID
    *
    * @param id - The ID of the user to retrieve
+   * @throws - A RowNotFoundException when no user is found
    */
-  async findOne(id: number) {
-    const user = await User.findOrFail(id)
-    return user
+  async show(id: number) {
+    try {
+      return await User.findOrFail(id)
+    } catch (error) {
+      throw new RowNotFoundException(this.entityName)
+    }
   }
 
   /**
@@ -29,7 +39,7 @@ export default class UserService {
    *
    * @param data - The data to create a user with
    */
-  async create(data: UserCreationPayload): Promise<User> {
+  async store(data: UserCreationPayload): Promise<User> {
     const user = await User.create(data)
     return await user.save()
   }
@@ -49,7 +59,7 @@ export default class UserService {
    *
    * @param user - The user to delete
    */
-  async delete(user: User) {
+  async destroy(user: User) {
     return await user.delete()
   }
 }
