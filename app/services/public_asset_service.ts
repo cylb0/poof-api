@@ -1,3 +1,4 @@
+import RowNotFoundException from '#exceptions/row_not_found_exception'
 import PublicAsset from '#models/public_asset'
 import { PublicAssetCreationPayload, PublicAssetUpdatePayload } from '#types/public_assets'
 
@@ -5,6 +6,11 @@ import { PublicAssetCreationPayload, PublicAssetUpdatePayload } from '#types/pub
  * Service that handles public assets objects related operations
  */
 export default class PublicAssetService {
+  /**
+   * Entity name as displayed in exception messages
+   */
+  entityName = 'Public asset'
+
   constructor() {}
 
   /**
@@ -17,10 +23,14 @@ export default class PublicAssetService {
   /**
    * Retrieves a single public asset by its ID
    * @param id - The ID of the public asset to retrieve
+   * @throws - A {@link RowNotFoundException} when no public asset is found
    */
-  async findOne(id: number) {
-    const publicAsset = await PublicAsset.findOrFail(id)
-    return publicAsset
+  async show(id: number) {
+    try {
+      return await PublicAsset.findOrFail(id)
+    } catch (error) {
+      throw new RowNotFoundException(this.entityName)
+    }
   }
 
   /**

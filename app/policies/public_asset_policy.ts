@@ -9,7 +9,7 @@ export default class PublicAssetPolicy extends BasePolicy {
     if (user === null) {
       return false
     }
-    return user.roleId === Roles.ADMIN
+    if (user.roleId === Roles.ADMIN) return true
   }
 
   index(user: User): AuthorizerResponse {
