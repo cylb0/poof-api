@@ -7,7 +7,7 @@ import { Roles } from '#enums/roles'
 export default class ScenePolicy extends BasePolicy {
   async before(user: User) {
     if (user === null) return false
-    return user.roleId === Roles.ADMIN
+    if (user.roleId === Roles.ADMIN) return true
   }
 
   index(user: User): AuthorizerResponse {
@@ -18,7 +18,7 @@ export default class ScenePolicy extends BasePolicy {
     return false
   }
 
-  create(user: User): AuthorizerResponse {
+  store(user: User): AuthorizerResponse {
     return false
   }
 

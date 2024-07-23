@@ -13,10 +13,10 @@ export const createSceneValidator = vine.compile(
     backgroundColor: vine.string().hexCode().optional(),
     publicAssetId: vine
       .number()
-      .exists(async (query, field) => {
-        const publicAsset = (await query
+      .exists(async (db, value) => {
+        const publicAsset = (await db
           .from('public_assets')
-          .where('id', field)
+          .where('id', value)
           .first()) as PublicAsset
         return (
           !!publicAsset && (publicAsset.type === Assets.IMAGE || publicAsset.type === Assets.VIDEO)
@@ -25,10 +25,10 @@ export const createSceneValidator = vine.compile(
       .optional(),
     privateAssetId: vine
       .number()
-      .exists(async (query, field) => {
-        const privateAsset = (await query
+      .exists(async (db, value) => {
+        const privateAsset = (await db
           .from('private_assets')
-          .where('id', field)
+          .where('id', value)
           .first()) as PrivateAsset
         return (
           !!privateAsset &&
@@ -48,16 +48,27 @@ export const updateSceneValidator = vine.compile(
     backgroundColor: vine.string().optional(),
     publicAssetId: vine
       .number()
-      .exists(async (query, field) => {
-        const publicAsset = await query.from('public_assets').where('id', field).first()
-        return !!publicAsset
+      .exists(async (db, value) => {
+        const publicAsset = (await db
+          .from('public_assets')
+          .where('id', value)
+          .first()) as PublicAsset
+        return (
+          !!publicAsset && (publicAsset.type === Assets.IMAGE || publicAsset.type === Assets.VIDEO)
+        )
       })
       .optional(),
     privateAssetId: vine
       .number()
-      .exists(async (query, field) => {
-        const privateAsset = await query.from('private_assets').where('id', field).first()
-        return !!privateAsset
+      .exists(async (db, value) => {
+        const privateAsset = (await db
+          .from('private_assets')
+          .where('id', value)
+          .first()) as PrivateAsset
+        return (
+          !!privateAsset &&
+          (privateAsset.type === Assets.IMAGE || privateAsset.type === Assets.VIDEO)
+        )
       })
       .optional(),
   })

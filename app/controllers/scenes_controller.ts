@@ -1,4 +1,11 @@
-import { FORBIDDEN_MESSAGE } from '#constants/exception_messages'
+import {
+  FORBIDDEN_MESSAGE,
+  RESOURCE_CREATION_SUCCESS,
+  RESOURCE_DELETE_SUCCESS,
+  RESOURCE_FOUND,
+  RESOURCE_LIST_FOUND,
+  RESOURCE_UPDATE_SUCCESS,
+} from '#constants/api_response_messages'
 import ScenePolicy from '#policies/scene_policy'
 import SceneService from '#services/scene_service'
 import { SceneCreationPayload, SceneUpdatePayload } from '#types/scene'
@@ -17,25 +24,31 @@ export default class ScenesController {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
     const scenes = await this.sceneService.all()
-    return response.ok(scenes)
+    return response.ok({
+      message: RESOURCE_LIST_FOUND,
+      data: scenes,
+    })
   }
 
   /**
    * Show individual record
    */
   async show({ bouncer, params, response }: HttpContext) {
-    const scene = await this.sceneService.findOne(params.id)
+    const scene = await this.sceneService.show(params.id)
     if (await bouncer.with(ScenePolicy).denies('show', scene)) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
-    return response.ok(scene)
+    return response.ok({
+      message: RESOURCE_FOUND,
+      data: scene,
+    })
   }
 
   /**
    * Handle form submission for the create action
    */
   async store({ bouncer, request, response }: HttpContext) {
-    if (await bouncer.with(ScenePolicy).denies('create')) {
+    if (await bouncer.with(ScenePolicy).denies('store')) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
     const payload: SceneCreationPayload = await request.validateUsing(createSceneValidator)
@@ -45,15 +58,18 @@ export default class ScenesController {
     if (payload.privateAssetId && payload.publicAssetId) {
       return response.badRequest({ message: `You can only select one asset.` })
     }
-    const scene = await this.sceneService.create(payload)
-    return response.created(scene)
+    const scene = await this.sceneService.store(payload)
+    return response.created({
+      message: RESOURCE_CREATION_SUCCESS,
+      data: scene,
+    })
   }
 
   /**
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
-    const scene = await this.sceneService.findOne(params.id)
+    const scene = await this.sceneService.show(params.id)
     if (await bouncer.with(ScenePolicy).denies('update', scene)) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
@@ -75,18 +91,24 @@ export default class ScenesController {
     }
 
     const updatedScene = await this.sceneService.update(scene, payload)
-    return response.ok(updatedScene)
+    return response.ok({
+      message: RESOURCE_UPDATE_SUCCESS,
+      data: updatedScene,
+    })
   }
 
   /**
    * Delete record
    */
   async destroy({ bouncer, params, response }: HttpContext) {
-    const scene = await this.sceneService.findOne(params.id)
+    const scene = await this.sceneService.show(params.id)
     if (await bouncer.with(ScenePolicy).denies('destroy', scene)) {
       return response.forbidden({ message: FORBIDDEN_MESSAGE })
     }
-    await this.sceneService.delete(scene)
-    return response.ok(scene)
+    await this.sceneService.destroy(scene)
+    return response.ok({
+      message: RESOURCE_DELETE_SUCCESS,
+      data: scene,
+    })
   }
 }

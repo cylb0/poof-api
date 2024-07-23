@@ -1,3 +1,4 @@
+import RowNotFoundException from '#exceptions/row_not_found_exception'
 import Scene from '#models/scene'
 import { SceneCreationPayload, SceneUpdatePayload } from '#types/scene'
 
@@ -5,6 +6,11 @@ import { SceneCreationPayload, SceneUpdatePayload } from '#types/scene'
  * Service that manages scenes objects related operations
  */
 export default class SceneService {
+  /**
+   * Entity name as displayed in exception messages
+   */
+  entityName = 'Scene'
+
   constructor() {}
 
   /**
@@ -18,10 +24,14 @@ export default class SceneService {
   /**
    * Retrieves a single scene by its ID
    * @param id - The ID of the scene to retrieve
+   * @throws - A {@link RowNotFoundException} if no row is found.
    */
-  async findOne(id: number) {
-    const scene = await Scene.findOrFail(id)
-    return scene
+  async show(id: number) {
+    try {
+      return await Scene.findOrFail(id)
+    } catch (error) {
+      throw new RowNotFoundException(this.entityName)
+    }
   }
 
   /**
@@ -29,7 +39,7 @@ export default class SceneService {
    *
    * @param data - The data to create a new scene with
    */
-  async create(data: SceneCreationPayload) {
+  async store(data: SceneCreationPayload) {
     const scene = await Scene.create(data)
     return scene
   }
@@ -48,7 +58,7 @@ export default class SceneService {
    * Deletes a scene
    * @param scene - The scene to delete
    */
-  async delete(scene: Scene) {
+  async destroy(scene: Scene) {
     return await scene.delete()
   }
 }
