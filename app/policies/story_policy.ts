@@ -9,7 +9,7 @@ export default class StoryPolicy extends BasePolicy {
     if (user === null) {
       return false
     }
-    return user.roleId === Roles.ADMIN
+    if (user.roleId === Roles.ADMIN) return true
   }
 
   index(user: User): AuthorizerResponse {
@@ -28,7 +28,7 @@ export default class StoryPolicy extends BasePolicy {
     return false
   }
 
-  delete(user: User, story: Story): AuthorizerResponse {
+  destoy(user: User, story: Story): AuthorizerResponse {
     return false
   }
 }

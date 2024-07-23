@@ -8,8 +8,8 @@ export const createStoryValidator = vine.compile(
   vine.object({
     name: vine.string().maxLength(255).optional(),
     description: vine.string().optional(),
-    userId: vine.number().exists(async (query, field) => {
-      const user = (await query.from('users').where('id', field).first()) as User
+    userId: vine.number().exists(async (db, value) => {
+      const user = (await db.from('users').where('id', value).first()) as User
       return !!user
     }),
   })

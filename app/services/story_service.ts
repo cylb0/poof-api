@@ -1,3 +1,4 @@
+import RowNotFoundException from '#exceptions/row_not_found_exception'
 import Story from '#models/story'
 import { StoryCreationPayload, StoryUpdatePayload } from '#types/story'
 
@@ -5,6 +6,11 @@ import { StoryCreationPayload, StoryUpdatePayload } from '#types/story'
  * Service that handles stories objects related operations
  */
 export default class StoryService {
+  /**
+   * Entity name as displayed in exception messages
+   */
+  entityName = 'Story'
+
   /**
    * Retrieves all stories
    */
@@ -16,10 +22,14 @@ export default class StoryService {
   /**
    * Retrieves a single story by its ID
    * @param id - The ID of the story to look for
+   * @throws - A {@link RowNotFoundException} when no row is found
    */
-  async findOne(id: number) {
-    const story = await Story.findOrFail(id)
-    return story
+  async show(id: number) {
+    try {
+      return await Story.findOrFail(id)
+    } catch (error) {
+      throw new RowNotFoundException(this.entityName)
+    }
   }
 
   /**
@@ -27,7 +37,7 @@ export default class StoryService {
    *
    * @param data - The data to create the new story with
    */
-  async create(data: StoryCreationPayload) {
+  async store(data: StoryCreationPayload) {
     const story = await Story.create(data)
     return story
   }
@@ -48,7 +58,7 @@ export default class StoryService {
    *
    * @param story - The story to delete
    */
-  async delete(story: Story) {
+  async destoy(story: Story) {
     return await story.delete()
   }
 }
