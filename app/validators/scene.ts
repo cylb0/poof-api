@@ -1,7 +1,7 @@
-import { Assets } from '#enums/assets'
 import PrivateAsset from '#models/private_asset'
 import PublicAsset from '#models/public_asset'
 import vine from '@vinejs/vine'
+import { imageOrVideoRule } from '../rules/is_image_or_video.js'
 
 /**
  * Validator for scene creation payload
@@ -18,10 +18,9 @@ export const createSceneValidator = vine.compile(
           .from('public_assets')
           .where('id', value)
           .first()) as PublicAsset
-        return (
-          !!publicAsset && (publicAsset.type === Assets.IMAGE || publicAsset.type === Assets.VIDEO)
-        )
+        return !!publicAsset
       })
+      .use(imageOrVideoRule({ table: 'public_assets', column: 'id' }))
       .optional(),
     privateAssetId: vine
       .number()
@@ -30,11 +29,9 @@ export const createSceneValidator = vine.compile(
           .from('private_assets')
           .where('id', value)
           .first()) as PrivateAsset
-        return (
-          !!privateAsset &&
-          (privateAsset.type === Assets.IMAGE || privateAsset.type === Assets.VIDEO)
-        )
+        return !!privateAsset
       })
+      .use(imageOrVideoRule({ table: 'private_assets', column: 'id' }))
       .optional(),
   })
 )
@@ -53,10 +50,9 @@ export const updateSceneValidator = vine.compile(
           .from('public_assets')
           .where('id', value)
           .first()) as PublicAsset
-        return (
-          !!publicAsset && (publicAsset.type === Assets.IMAGE || publicAsset.type === Assets.VIDEO)
-        )
+        return !!publicAsset
       })
+      .use(imageOrVideoRule({ table: 'public_assets', column: 'id' }))
       .optional(),
     privateAssetId: vine
       .number()
@@ -65,11 +61,9 @@ export const updateSceneValidator = vine.compile(
           .from('private_assets')
           .where('id', value)
           .first()) as PrivateAsset
-        return (
-          !!privateAsset &&
-          (privateAsset.type === Assets.IMAGE || privateAsset.type === Assets.VIDEO)
-        )
+        return !!privateAsset
       })
+      .use(imageOrVideoRule({ table: 'private_assets', column: 'id' }))
       .optional(),
   })
 )
