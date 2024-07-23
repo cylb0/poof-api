@@ -95,10 +95,10 @@ export default class UsersController {
     const user = await this.userService.show(params.id)
     if (await bouncer.with(UserPolicy).denies('delete', user)) {
       return response.forbidden({
-        message: `You cannot access this resource.`,
+        message: FORBIDDEN_MESSAGE,
       })
     }
-    await this.userService.delete(user)
+    await this.userService.destroy(user)
     return response.ok({
       message: RESOURCE_DELETE_SUCCESS,
       data: user,
