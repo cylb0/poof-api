@@ -1,4 +1,11 @@
-import { FORBIDDEN_MESSAGE } from '#constants/exception_messages'
+import {
+  FORBIDDEN_MESSAGE,
+  RESOURCE_CREATION_SUCCESS,
+  RESOURCE_DELETE_SUCCESS,
+  RESOURCE_FOUND,
+  RESOURCE_LIST_FOUND,
+  RESOURCE_UPDATE_SUCCESS,
+} from '#constants/api_response_messages'
 import PrivateAsset from '#models/private_asset'
 import PrivateAssetPolicy from '#policies/private_asset_policy'
 import PrivateAssetService from '#services/private_asset_service'
@@ -21,20 +28,26 @@ export default class PrivateAssetsController {
       })
     }
     const privateAssets = await this.privateAssetService.all()
-    return response.ok(privateAssets)
+    return response.ok({
+      message: RESOURCE_LIST_FOUND,
+      data: privateAssets,
+    })
   }
 
   /**
    * Show individual record
    */
   async show({ bouncer, params, response }: HttpContext) {
-    const privateAsset = await this.privateAssetService.findOne(params.id)
+    const privateAsset = await this.privateAssetService.show(params.id)
     if (await bouncer.with(PrivateAssetPolicy).denies('show', privateAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
     }
-    return response.ok(privateAsset)
+    return response.ok({
+      message: RESOURCE_FOUND,
+      data: privateAsset,
+    })
   }
 
   /**
@@ -49,15 +62,18 @@ export default class PrivateAssetsController {
     const payload: PrivateAssetCreationPayload = await request.validateUsing(
       createPrivateAssetValidator
     )
-    const privateAsset: PrivateAsset = await this.privateAssetService.create(payload)
-    return response.created(privateAsset)
+    const privateAsset: PrivateAsset = await this.privateAssetService.store(payload)
+    return response.created({
+      message: RESOURCE_CREATION_SUCCESS,
+      data: privateAsset,
+    })
   }
 
   /**
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
-    const privateAsset = await this.privateAssetService.findOne(params.id)
+    const privateAsset = await this.privateAssetService.show(params.id)
     if (await bouncer.with(PrivateAssetPolicy).denies('update', privateAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
@@ -70,20 +86,26 @@ export default class PrivateAssetsController {
       privateAsset,
       payload
     )
-    return response.ok(updatedPrivateAsset)
+    return response.ok({
+      message: RESOURCE_UPDATE_SUCCESS,
+      data: updatePrivateAssetValidator,
+    })
   }
 
   /**
    * Delete record
    */
   async destroy({ bouncer, params, response }: HttpContext) {
-    const privateAsset = await this.privateAssetService.findOne(params.id)
+    const privateAsset = await this.privateAssetService.show(params.id)
     if (await bouncer.with(PrivateAssetPolicy).denies('destroy', privateAsset)) {
       return response.forbidden({
         message: FORBIDDEN_MESSAGE,
       })
     }
-    await this.privateAssetService.delete(privateAsset)
-    return response.ok(privateAsset)
+    await this.privateAssetService.destroy(privateAsset)
+    return response.ok({
+      message: RESOURCE_DELETE_SUCCESS,
+      data: privateAsset,
+    })
   }
 }

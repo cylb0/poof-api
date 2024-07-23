@@ -37,7 +37,7 @@ export default class PublicAssetService {
    * Creates a new public asset
    * @param data - The data to create the public asset with
    */
-  async create(data: PublicAssetCreationPayload) {
+  async store(data: PublicAssetCreationPayload) {
     const publicAsset = await PublicAsset.create(data)
     return await publicAsset.save()
   }
@@ -55,7 +55,7 @@ export default class PublicAssetService {
    * Deletes a public asset
    * @param publicAsset - The public asset to delete
    */
-  async delete(publicAsset: PublicAsset) {
+  async destroy(publicAsset: PublicAsset) {
     return await publicAsset.delete()
   }
 }

@@ -9,7 +9,7 @@ import {
   RESOURCE_FOUND,
   RESOURCE_LIST_FOUND,
   RESOURCE_UPDATE_SUCCESS,
-} from '../constants/api_response_messages.js'
+} from '#constants/api_response_messages'
 import { createPublicAssetValidator, updatePublicAssetValidator } from '#validators/public_asset'
 import PublicAsset from '#models/public_asset'
 import { PublicAssetUpdatePayload } from '#types/public_assets'
@@ -60,7 +60,7 @@ export default class PublicAssetsController {
       })
     }
     const payload = await request.validateUsing(createPublicAssetValidator)
-    const publicAsset: PublicAsset = await this.publicAssetService.create(payload)
+    const publicAsset: PublicAsset = await this.publicAssetService.store(payload)
     return response.created({
       message: RESOURCE_CREATION_SUCCESS,
       data: publicAsset,
@@ -100,7 +100,7 @@ export default class PublicAssetsController {
         message: FORBIDDEN_MESSAGE,
       })
     }
-    await this.publicAssetService.delete(publicAsset)
+    await this.publicAssetService.destroy(publicAsset)
     return response.ok({
       message: RESOURCE_DELETE_SUCCESS,
       data: publicAsset,
