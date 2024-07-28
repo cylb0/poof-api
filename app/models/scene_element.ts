@@ -46,7 +46,7 @@ export default class SceneElement extends BaseModel {
    * Foreign key referencing the `PublicAsset` model
    */
   @column()
-  declare publicAssetId: number
+  declare publicAssetId: number | null
 
   /**
    * BelongsTo relationship with the `PublicAsset` model
@@ -58,7 +58,7 @@ export default class SceneElement extends BaseModel {
    * Foreign key referencing the `PrivateAsset` model
    */
   @column()
-  declare privateAssetId: number
+  declare privateAssetId: number | null
 
   /**
    * BelongsTo relationship with the `PrivateAsset` model
@@ -70,7 +70,7 @@ export default class SceneElement extends BaseModel {
    * (Optional) Text content in case of a text scene element
    */
   @column()
-  declare textContent?: string
+  declare textContent?: string | null
 
   /**
    * Time in seconds when the scene element appears in the video

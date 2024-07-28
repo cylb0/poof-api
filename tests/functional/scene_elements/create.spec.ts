@@ -83,6 +83,8 @@ test.group('POST /scene-elements should', (group) => {
       .headers({ Authorization: `Bearer ${token}` })
       .json(sceneElement)
     response.assertStatus(201)
-    response.assertBodyContains(sceneElement)
+    response.assertBodyContains({
+      data: sceneElement,
+    })
   })
 })

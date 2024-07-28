@@ -20,7 +20,19 @@ export interface SceneElementCreationPayload {
 /**
  * Interface representing the payload of a scene element update
  */
-export interface SceneElementUpdatePayload {}
+export interface SceneElementUpdatePayload {
+    type?: SceneElementType
+    zIndex?: number
+    publicAssetId?: number
+    privateAssetId?: number
+    textContent?: string
+    from?: number
+    duration?: number
+    position?: Position
+    dimensions?: Dimensions
+    metadata?: any
+    changeContentType?: boolean
+}
 
 /**
  * Interface representing a position with two coordinates x, y

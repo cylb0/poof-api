@@ -1,16 +1,21 @@
 import User from '#models/user'
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 test.group('POST /login', (group) => {
   const validEmail = 'valid@valid.com'
   const validPassword = '123456789aA!'
+  let user: User
 
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
   group.setup(async () => {
-    const user = new User()
+    user = new User()
     user.email = validEmail
     user.password = validPassword
     await user.save()
   })
+
+  group.teardown(async () => await user.delete())
 
   test('should successfully log a user', async ({ client }) => {
     const response = await client.post('/login').json({

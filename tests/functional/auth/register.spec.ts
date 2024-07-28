@@ -1,9 +1,13 @@
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-test.group('POST /register', () => {
+test.group('POST /register', (group) => {
   const validEmail = 'test@mail.com'
   const validPassword = '123456789aA!'
   const invalidEmail = 'test@'
+
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
   test('should register a user with valid credentials', async ({ client }) => {
     const response = await client.post('/register').json({
       email: validEmail,

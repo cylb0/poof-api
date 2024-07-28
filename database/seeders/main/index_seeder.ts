@@ -12,5 +12,6 @@ export default class extends BaseSeeder {
     await this.seed(await import('#database/seeders/private_asset_seeder'))
     await this.seed(await import('#database/seeders/story_seeder'))
     await this.seed(await import('#database/seeders/scene_seeder'))
+    await this.seed(await import('#database/seeders/scene_element_seeder'))
   }
 }

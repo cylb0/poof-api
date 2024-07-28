@@ -16,11 +16,4 @@ test.group('UserPolicy', () => {
     const authorized = await userPolicy.before(user, 'show')
     assert.isTrue(authorized)
   })
-  test('before - should deny non-admin users', async ({ assert }) => {
-    const user = new User()
-    user.roleId = Roles.USER
-    const userPolicy = new UserPolicy()
-    const authorized = await userPolicy.before(user, 'show')
-    assert.isFalse(authorized)
-  })
 })

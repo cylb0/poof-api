@@ -35,6 +35,23 @@ test.group('PATCH /users/:id', (group) => {
     })
   })
 
+  test('should not return a 422 when email is already used by current user', async ({ client }) => {
+    const response = await client
+      .patch(`/users/${admin!.id}`)
+      .json({
+        email: admin!.email,
+      })
+      .loginAs(admin!)
+
+    response.assertStatus(200)
+    response.assertBodyContains({
+      message: RESOURCE_UPDATE_SUCCESS,
+      data: {
+        id: admin!.id,
+      },
+    })
+  })
+
   test('should return a 422 when email is already used', async ({ client }) => {
     const response = await client
       .patch(`/users/${user!.id}`)
